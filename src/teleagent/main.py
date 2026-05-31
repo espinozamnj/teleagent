@@ -10,6 +10,7 @@ from telegram.error import NetworkError
 
 from teleagent.core.logger import setup_logging
 from teleagent.core.config import load_config, get_bot_token
+from teleagent.core.version import get_version_message
 from teleagent.handlers.commands import cmd_start, cmd_help, cmd_alias, cmd_status
 from teleagent.handlers.messages import handle_message
 from teleagent.handlers.callbacks import handle_confirmation_callback
@@ -28,15 +29,17 @@ async def global_error_handler(update: object, context: ContextTypes.DEFAULT_TYP
     logging.error("Error in update %s: %s", update, context.error)
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="Telegram Command Bot",
+        formatter_class=argparse.RawTextHelpFormatter
+    )
+    parser.add_argument('-v', '--version', action='version', version=get_version_message())
+    parser.add_argument('--config', required=True, help='Path to the main config.yaml file')
+    args = parser.parse_args()
+
     if hasattr(os, 'geteuid') and os.geteuid() != 0:
         print("Error: This program must be run with root privileges (using sudo).", file=sys.stderr)
         sys.exit(1)
-
-    print("you are root, good :)")
-
-    parser = argparse.ArgumentParser(description="Telegram Command Bot")
-    parser.add_argument('--config', required=True, help='Path to the main config.yaml file')
-    args = parser.parse_args()
 
     setup_logging()
 
