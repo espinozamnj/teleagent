@@ -1,0 +1,22 @@
+users:
+  ana:
+    root: true
+    can_switch: true
+    tg_ids:
+      - "1010101010"
+      - "2121212121"
+  bob:
+    root: true
+    can_switch: false
+    tg_ids:
+      - "3232323232"
+
+log_dir: "/var/log/teleagent"
+file_tg_bot_creds: "/etc/teleagent/tg_bot.env"
+
+# List of custom commands that require a confirmation dialog in Telegram before running
+# (in addition to defaults: reboot, shutdown, halt, poweroff)
+confirmation_required:
+  - "rm"
+  - "init"
+  - "docker stop"
